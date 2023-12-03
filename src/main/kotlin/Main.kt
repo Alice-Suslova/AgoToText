@@ -11,7 +11,7 @@ fun agoToText(time: Int): String {
 
         in 0..60 -> "только что"
         in 61..3600 -> "${secondsByMinutes(time)} назад"
-        in 3601..86400 -> "${minutesByHours(time)} назад"
+        in 3601..86400 -> "${secondsByHours(time)} назад"
         in 86401..172800 -> "вчера"
         in 172801..259200 -> "позавчера"
         else -> "давно"
@@ -30,17 +30,16 @@ fun secondsByMinutes(time: Int): String {
         minutes = (time / 60).toInt() + 1
     }
 
-    var result = when (minutes) {
-        1 -> "минут"
-        2 -> "минуты"
-        3 -> "минуты"
-        4 -> "минуты"
-        else -> "минут"
+    return if (minutes % 10 == 1 && minutes % 100 != 11) {
+        "$minutes минуту"
+    } else if (minutes % 10 in 2..4) {
+        "$minutes минуты"
+    } else {
+        "$minutes минут"
     }
-    return "$minutes $result"
 }
 
-fun minutesByHours(time: Int): String {
+fun secondsByHours(time: Int): String {
 
     var hours: Int = 0
     if (time % 3600 == 0) {
@@ -49,12 +48,11 @@ fun minutesByHours(time: Int): String {
         hours = (time / 3600).toInt() + 1
     }
 
-    var result = when (hours) {
-        1 -> "час"
-        2 -> "часа"
-        3 -> "часа"
-        4 -> "часа"
-        else -> "часов"
+    return if (hours % 10 == 1 && hours % 100 != 11) {
+        "$hours час"
+    } else if (hours % 10 in 2..4) {
+        "$hours часа"
+    } else {
+        "$hours часов"
     }
-    return "$hours $result"
 }
